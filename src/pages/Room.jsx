@@ -13,6 +13,8 @@ const client = AgoraRTC.createClient({
 
 export default function Room () {
     const [users, setUsers] = useState([]);
+    const [localTracks, setLocalTracks] = useState([]);
+
     const handleUserJoined = async (user, mediaType) => {
         await client.subscribe(user, mediaType);
 
@@ -43,6 +45,7 @@ export default function Room () {
         )
         .then(([tracks, uid]) => {
             const [audioTrack, videoTrack] = tracks;
+            setLocalTracks(tracks);
             setUsers((previousUsers) => [
                 ...previousUsers,
                 {
@@ -51,7 +54,17 @@ export default function Room () {
                 },
             ]);
             client.publish(tracks);
-        })
+        });
+
+        return () => {
+            for (let localTrack of localTracks) {
+                localTrack.stop();
+                localTrack.close();
+            }
+            client.off('user-published', handleUserJoined);
+            client.off('user-left', handleUserLeft);
+            client.unpublish(tracks).then(() => client.leave());
+        };
     }, []);
     return (
         <div className="flex justify-center">
