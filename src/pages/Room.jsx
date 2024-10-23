@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import ReactDOM from "react-dom/client";
 import AgoraRTC  from "agora-rtc-sdk-ng";
 import { VideoPlayer } from "./VideoPlayer";
 
@@ -39,6 +40,14 @@ export default function Room () {
                 width: "500",
                 height: "500",
             });
+
+            const pipDiv = dpip.document.createElement("div");
+            pipDiv.setAttribute("id", "pip-root");
+            dpip.document.body.append(pipDiv);
+            const pipRoot = ReactDOM.createRoot(
+                dpip.document.getElementById("pip-root")
+            );
+            pipRoot.render(<WindowContents />);
         } catch (error) {
             if (error) {
                 console.log(error);
@@ -77,9 +86,19 @@ export default function Room () {
             }
             client.off('user-published', handleUserJoined);
             client.off('user-left', handleUserLeft);
-            client.unpublish(tracks).then(() => client.leave());
+            client.unpublish(localTracks).then(() => client.leave());
         };
     }, []);
+
+    const WindowContents = () => {
+        return (
+          <div className="bg-red flex gap-2">
+                {users.map((user) => (
+                    <VideoPlayer key={user.uid} user={user}/>
+                ))}
+          </div>
+        );
+      };
 
     
     return (
