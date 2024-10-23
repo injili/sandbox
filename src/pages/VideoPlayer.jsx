@@ -2,20 +2,22 @@ import PropTypes from "prop-types";
 import { useEffect, useRef } from "react";
 
 export const VideoPlayer = ({ user }) => {
-    const ref = useRef();
+    const videoRef = useRef();
 
     useEffect(() => {
-        user.videoTrack.play(ref.current);
-    }, []);
+        if (user.videoTrack && videoRef.current) {
+            user.videoTrack.play(videoRef.current);
+        }
+    }, [user]);
 
     return (
-        <div>
-            Uid: {user.uid}
-            <div
-                ref={ref}
-                className="w-[200px] h-[200px]">
-            </div>
-        </div>
+        <video
+            ref={videoRef}
+            className="w-[200px] h-[200px]"
+            autoPlay
+            playsInline
+            muted
+        />
     )
 }
 

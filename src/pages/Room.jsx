@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import AgoraRTC  from "agora-rtc-sdk-ng";
 import { VideoPlayer } from "./VideoPlayer";
 
 const APP_ID = '4285afde204f4617a16226d705c1092c';
-const TOKEN = '007eJxTYBBYymoXcuqRZ5diSUDMncBFMxTMvs+RvCC97u1yCUfrX88UGEyMLEwT01JSjQxM0kzMDM0TDc2MjMxSzA1Mkw0NLI2S5+kJpDcEMjIEhJxlYIRCEJ+bITivND09J9U3NbWEgQEAuN8gQw=='
+const TOKEN = '007eJxTYDhUuWG3sd7H+xGMB9c7r91eUPU47bxd1hzGBFUVm8cay9wVGEyMLEwT01JSjQxM0kzMDM0TDc2MjMxSzA1Mkw0NLI2SeT9KpDcEMjLw/NBnYIRCEJ+bITivND09J9U3NbWEgQEAA8kglA=='
 const CHANNEL = 'SnuggleMeet'
 
 const client = AgoraRTC.createClient({
@@ -14,6 +14,7 @@ const client = AgoraRTC.createClient({
 export default function Room () {
     const [users, setUsers] = useState([]);
     const [localTracks, setLocalTracks] = useState([]);
+    const videoRef = useRef(null);
 
     const handleUserJoined = async (user, mediaType) => {
         await client.subscribe(user, mediaType);
@@ -30,6 +31,19 @@ export default function Room () {
         setUsers((previousUsers) => 
             previousUsers.filter((u) => u.uid !== user.uid)
         );
+    };
+
+    const openWindow = async () => {
+        try {
+            const dpip = await window.documentPictureInPicture.requestWindow({
+                width: "500",
+                height: "500",
+            });
+        } catch (error) {
+            if (error) {
+                console.log(error);
+            }
+        }
     };
 
     useEffect(() => {
@@ -66,6 +80,8 @@ export default function Room () {
             client.unpublish(tracks).then(() => client.leave());
         };
     }, []);
+
+    
     return (
         <div className="flex justify-center">
             <div
@@ -78,6 +94,7 @@ export default function Room () {
                     <VideoPlayer key={user.uid} user={user}/>
                 ))}
             </div>
+            <button onClick={openWindow} className="border-2 bg-red p-4">open</button>
         </div>
     )
 }
