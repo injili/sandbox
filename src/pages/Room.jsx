@@ -37,8 +37,8 @@ export default function Room () {
     const openWindow = async () => {
         try {
             const dpip = await window.documentPictureInPicture.requestWindow({
-                width: "500",
-                height: "500",
+                width: "100",
+                height: "100",
             });
 
             const pipDiv = dpip.document.createElement("div");
@@ -92,9 +92,10 @@ export default function Room () {
 
     const WindowContents = () => {
         return (
-          <div className="bg-red flex gap-2">
+          <div className="h-screen w-screen bg-cyan p-2 grid grid-cols-2 overflow-hidden gap-2">
                 {users.map((user) => (
-                    <VideoPlayer key={user.uid} user={user}/>
+                    <VideoPlayer key={user.uid} user={user} 
+                    className="w-[100px] h-[100px]"/>
                 ))}
           </div>
         );
@@ -110,7 +111,8 @@ export default function Room () {
             }}
             >
                 {users.map((user) => (
-                    <VideoPlayer key={user.uid} user={user}/>
+                    <VideoPlayer key={user.uid} user={user} 
+                    className="w-[200px] h-[200px]"/>
                 ))}
             </div>
             <button onClick={openWindow} className="border-2 bg-red p-4">open</button>
