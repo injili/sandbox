@@ -4,7 +4,7 @@ import AgoraRTC  from "agora-rtc-sdk-ng";
 import { VideoPlayer } from "./VideoPlayer";
 
 const APP_ID = '4285afde204f4617a16226d705c1092c';
-const TOKEN = '007eJxTYDhUuWG3sd7H+xGMB9c7r91eUPU47bxd1hzGBFUVm8cay9wVGEyMLEwT01JSjQxM0kzMDM0TDc2MjMxSzA1Mkw0NLI2SeT9KpDcEMjLw/NBnYIRCEJ+bITivND09J9U3NbWEgQEAA8kglA=='
+const TOKEN = '007eJxTYPCdfO/U5/QNTTMiPoixczD8ZGRXOiij7+JtN89bIEmSZ50Cg4mRhWliWkqqkYFJmomZoXmioZmRkVmKuYFpsqGBpVHyoQdK6Q2BjAwcPo4MjFAI4nMzBOeVpqfnpPqmppYwMAAA/ikdfA=='
 const CHANNEL = 'SnuggleMeet'
 
 const client = AgoraRTC.createClient({
@@ -37,8 +37,8 @@ export default function Room () {
     const openWindow = async () => {
         try {
             const dpip = await window.documentPictureInPicture.requestWindow({
-                width: "100",
-                height: "100",
+                width: "1000",
+                height: "1000",
             });
 
             const pipDiv = dpip.document.createElement("div");

@@ -13,7 +13,6 @@ export const VideoPlayer = ({ user }) => {
     return (
         <video
             ref={videoRef}
-            className="w-[200px] h-[200px]"
             autoPlay
             playsInline
             muted
